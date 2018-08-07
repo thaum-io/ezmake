@@ -1,0 +1,25 @@
+# This is a sample build configuration for C++ – Make.
+# Check our guides at https://confluence.atlassian.com/x/5Q4SMw for more examples.
+# Only use spaces to indent your .yml configuration.
+# -----
+# You can specify a custom docker image from Docker Hub as your build environment.
+image: ubuntu:16.04
+
+pipelines:
+  default:
+    - step:
+        script: # Modify the commands below to build your repository.
+          - apt-get update
+          - apt-get -y install python3 cmake g++
+          - mkdir -p .cmake/ezmake
+          - mv * .cmake/ezmake/
+          - mv .cmake cmake
+          - mkdir -p src/{lib/lib1,bin/app1}
+          - touch src/lib/lib1/test.{hh,cc}
+          - echo '#include<stdio.h>' > src/bin/app1/main.cc
+          - echo 'int main(){printf("easy\n");return 0;}' >> src/bin/app1/main.cc
+          - python3 cmake/ezmake/ezproj.py -p . -d "test easymode project"
+          - cat Makefile
+          - make
+          - cd build
+          - make

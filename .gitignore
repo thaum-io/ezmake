@@ -1,0 +1,22 @@
+# Text editor stuff
+*.bak
+*~
+\#*\#
+.\#*
+
+# Build stuff
+build/
+
+## compile objects, incase
+*.so
+*.d
+*.pcm
+*.d
+*.o
+
+## CMake stuff
+CMake*
+cmake*
+!Makefile
+!CMakeLists.txt
+!cmake/
