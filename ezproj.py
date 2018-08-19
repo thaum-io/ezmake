@@ -305,7 +305,7 @@ if __name__ == "__main__":
         f.write("\trm -rf build\n")
         f.write("\n")
         f.write("gitreqs:\n")
-        f.write("\tgit submodule update --resursive --remote --init\n")
+        f.write("\tgit submodule update --recursive --remote --init\n")
         f.write("\n")
         f.write(".PHONY:\n")
         f.write("\tbuild clean gitreqs")
