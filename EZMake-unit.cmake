@@ -188,23 +188,23 @@ endmacro()
 ## EZ MAKE THIS UNIT ADD TESTS
 # ------------------------------------------------------------------------
 macro(ez_this_unit_add_tests)
-  if (DEFINED ${${PROJECT_NAME}_WITH_TESTING})
+  if (${${PROJECT_NAME}_WITH_TESTING})
     ez_unit_check_init()
-    add_executable(${PROJECT_NAME}test_${THIS_UNIT_NAME} ${ARGN})
-    target_link_libraries(${PROJECT_NAME}test_${THIS_UNIT_NAME} ${EZ_THIS_UNIT_NAME_FULL})
+    add_executable(${PROJECT_NAME}test_${EZ_THIS_UNIT_NAME} ${ARGN})
+    target_link_libraries(${PROJECT_NAME}test_${EZ_THIS_UNIT_NAME} ${EZ_THIS_UNIT_NAME_FULL})
     add_test(NAME ${EZ_THIS_UNIT_TYPE}${EZ_THIS_UNIT_NAME_FULL} COMMAND ${PROJECT_NAME}test_${EZ_THIS_UNIT_NAME})
     set(tick "")
     foreach(arg ${ARGN})
       set(tick "✔${tick}")
     endforeach()
-    message(STATUS "${Green}Added ${ARGC} unit test files - ${tick}")
+    message(STATUS "${Green}Added ${ARGC} unit test files - ${tick}${ColourReset}")
   endif()
 endmacro()
 
 ## EZ MAKE THIS UNIT LINK TEST
 # ------------------------------------------------------------------------
 macro(ez_this_unit_link_tests)
-  if (DEFINED ${${PROJECT_NAME}_WITH_TESTING})
+  if (${${PROJECT_NAME}_WITH_TESTING})
     ez_unit_check_init()
     target_link_libraries(${PROJECT_NAME}test_${THIS_UNIT_NAME} ${ARGN})
   endif()

@@ -215,10 +215,9 @@ class EZMakeProject(object):
             extra += 1
         UNIT += "\n"*(extra > 0)
 
-        # Build link and install
+        # Build link
         UNIT += "ez_this_unit_build(%s)\n" % ( "SHARED" if (t=="lib") else "")
         UNIT += "#ez_this_unit_link(PUBLIC ${PROJECT_NAME}_libunit ${PROJECT_NAME}_extern_target)\n\n"
-        UNIT += "ez_this_unit_install()\n\n"
 
         # Strongly suggest testing!
         if (t == "lib"):
@@ -226,6 +225,8 @@ class EZMakeProject(object):
             UNIT += "#ez_this_unit_add_tests(tests/test1.cc tests/test2.cc)\n"
             UNIT += "#ez_this_unit_link_tests(PUBLIC test_main)\n\n"
 
+        # Install
+        UNIT += "ez_this_unit_install()\n\n"
         return UNIT
 
 
