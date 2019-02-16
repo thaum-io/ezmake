@@ -86,7 +86,7 @@ endmacro()
 #   ez_unit_add_source(unitname filename)
 #
 macro(ez_unit_add_header unitname filename)
-  set(${unitname}_HEADERS ${unitname}_HEADERS ${filename})
+  set(${unitname}_HEADERS ${$unitname}_HEADERS ${filename})
 endmacro()
 
 ## EZ MAKE THIS UNIT ADD HEADER
@@ -116,7 +116,7 @@ endmacro()
 #   ez_unit_add_header(unitname filename)
 #
 macro(ez_unit_add_source unitname filename)
-    set(${unitname}_SOURCES ${unitname}_SOURCES ${filename})
+    set(${unitname}_SOURCES ${$unitname}_SOURCES ${filename})
 endmacro()
 
 ## EZ MAKE THIS UNIT ADD SOURCE
