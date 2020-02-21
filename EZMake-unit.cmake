@@ -206,7 +206,7 @@ endmacro()
 macro(ez_this_unit_link_tests)
   if (${${PROJECT_NAME}_WITH_TESTING})
     ez_unit_check_init()
-    target_link_libraries(${PROJECT_NAME}test_${THIS_UNIT_NAME} ${ARGN})
+    target_link_libraries(${PROJECT_NAME}test_${EZ_THIS_UNIT_NAME} ${ARGN})
   endif()
 endmacro()
 
