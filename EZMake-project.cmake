@@ -84,7 +84,7 @@ macro(ez_proj_init)
   # ----------------------------------------
   # The first of a few variables
   # ----------------------------------------
-  set(EZ_PROJ_VER ${PROJECT_NAME}-${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR})
+  set(EZ_PROJ_VER ${PROJECT_NAME}-${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH})
   message("${BoldCyan}[ EZMake :: ${EZ_PROJ_VER} ]${ColourReset}")
 
   define_property(GLOBAL PROPERTY EZ_PROJ_LIBS
