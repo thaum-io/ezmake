@@ -53,15 +53,25 @@ macro(ez_unit_init as)
   if (${as} STREQUAL "lib")
     get_filename_component(EZ_THIS_UNIT_NAME ${CMAKE_CURRENT_SOURCE_DIR} NAME)
     set(EZ_THIS_UNIT_NAME_FULL ${PROJECT_NAME}_${EZ_THIS_UNIT_NAME})
-    message("${Blue}[ EZMake :: Library Unit ${EZ_THIS_UNIT_NAME_FULL} ]${ColourReset}")
   elseif (${as} STREQUAL "bin")
     get_filename_component(EZ_THIS_UNIT_NAME ${CMAKE_CURRENT_SOURCE_DIR} NAME)
     set(EZ_THIS_UNIT_NAME_FULL ${EZ_THIS_UNIT_NAME})
+  endif()
+  if (${ARGC} GREATER 2)
+    if(${ARGV1} STREQUAL "NAME")
+      set(EZ_THIS_UNIT_NAME ${ARGV2})
+      set(EZ_THIS_UNIT_NAME_FULL ${ARGV2})
+    endif()
+  endif()
+
+  # print
+  if (${as} STREQUAL "lib")
+    message("${Blue}[ EZMake :: Library Unit ${EZ_THIS_UNIT_NAME_FULL} ]${ColourReset}")
+  elseif (${as} STREQUAL "bin")
     message("${Blue}[ EZMake :: Application Unit ${EZ_THIS_UNIT_NAME_FULL} ]${ColourReset}")
   else()
     message(FATAL_ERROR "${BoldRed}[ EZMake :: Unit ${name} ] Unit type must be - lib, bin${ColourReset}")
   endif()
-
   message(STATUS "Unit initialized at ${CMAKE_CURRENT_SOURCE_DIR}")
 endmacro()
 
@@ -230,6 +240,7 @@ endmacro()
 #
 macro(ez_unit_install name as)
   if (NOT ${PROJECT_NAME}_NO_INSTALL)
+
     if (${as} STREQUAL "lib")
       set_property(GLOBAL APPEND PROPERTY EZ_PROJ_LIBS ${name})
       install(FILES ${EZ_THIS_UNIT_HEADERS} DESTINATION ${EZ_INSTALL_INCDIR}/${EZ_THIS_UNIT_NAME})
@@ -241,16 +252,26 @@ macro(ez_unit_install name as)
       message(FATAL_ERROR "${BoldRed}[ EZMake :: Unit ${name} ] Install type must be - lib, bin${ColourReset}")
     endif()
 
-    install(TARGETS ${name}
-      EXPORT ${name}-config
-      RUNTIME DESTINATION ${EZ_INSTALL_BINDIR}
-      LIBRARY DESTINATION ${EZ_INSTALL_LIBDIR}
-      ARCHIVE DESTINATION ${EZ_INSTALL_LIBDIR}
-      PUBLIC_HEADER DESTINATION ${EZ_INSTALL_INCDIR}/${EZ_THIS_UNIT_NAME}
-      INCLUDES DESTINATION ${EZ_INSTALL_INCDIR}/${EZ_THIS_UNIT_NAME}
-      COMPONENT ${as})
+    get_target_property(imported ${name} IMPORTED)
+    if(NOT ${imported})
+      install(TARGETS ${name}
+        EXPORT ${name}-config
+        RUNTIME DESTINATION ${EZ_INSTALL_BINDIR}
+        LIBRARY DESTINATION ${EZ_INSTALL_LIBDIR}
+        ARCHIVE DESTINATION ${EZ_INSTALL_LIBDIR}
+        PUBLIC_HEADER DESTINATION ${EZ_INSTALL_INCDIR}/${EZ_THIS_UNIT_NAME}
+        INCLUDES DESTINATION ${EZ_INSTALL_INCDIR}/${EZ_THIS_UNIT_NAME}
+        COMPONENT ${as})
 
-    install(EXPORT ${name}-config DESTINATION ${EZ_INSTALL_DATADIR}/cmake)
+      install(EXPORT ${name}-config DESTINATION ${EZ_INSTALL_DATADIR}/cmake)
+    elseif(${as} STREQUAL "lib")
+      get_target_property(libs ${name} IMPORTED_LOCATION)
+      install(PROGRAMS ${libs} DESTINATION ${EZ_INSTALL_LIBDIR})
+    elseif(${as} STREQUAL "bin")
+      get_target_property(bins ${name} IMPORTED_LOCATION)
+      install(PROGRAMS ${bins} DESTINATION ${EZ_INSTALL_BINDIR})
+    endif()
+
   endif()
 endmacro()
 
