@@ -78,7 +78,7 @@ macro(ez_this_unit_root_gen_rdict)
 
 endmacro()
 
-macro(ez_proj_ext_root_gen_logon)
+macro(ez_proj_ext_root_gen_logon user_logon)
   set(EZ_ROOTLOGON_LIBS "// Libraries")
   get_property(libs GLOBAL PROPERTY EZ_PROJ_LIBS)
   foreach (lib ${libs})
@@ -92,6 +92,9 @@ macro(ez_proj_ext_root_gen_logon)
   foreach(inc ${includes})
     set(EZ_ROOTLOGON_INCLUDES "${EZ_ROOTLOGON_INCLUDES}\ngROOT->ProcessLine(\"#include <${inc}>\");")
   endforeach()
+
+  set(EZ_ROOTLOGON_INIT "\ngROOT->ProcessLine(\".x ${CMAKE_INSTALL_PREFIX}/${EZ_INSTALL_INCDIR}/${user_logon}\");")
+  install(FILES ${PROJECT_SOURCE_DIR/}${user_logon} DESTINATION ${EZ_INSTALL_INCDIR})
 
   configure_file(${PROJECT_SOURCE_DIR}/cmake/ezmake/extensions/EZMake-ext-root-logon.cc.in ${PROJECT_BINARY_DIR}/${PROJECT_NAME}logon.cc @ONLY)
   if (NOT ${PROJECT_NAME}_NO_INSTALL)
